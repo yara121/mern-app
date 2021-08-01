@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const userController = require("../controllers/users.controller");
+const expenseController = require("../controllers/expense.controller");
 
 // Auth and Sign up
 router.post("/register", userController.register);
@@ -23,12 +24,9 @@ router.all("*", (req, res, next) => {
   })(req, res, next);
 });
 // ----------- Protected Routes ------------//
-router.get(
-  "/expense",
-
-  (req, res, next) => {
-    return res.send({ message: "hi, you are authenticated", user: req.user });
-  }
-);
+router.get("/expense", expenseController.get);
+router.post("/expense", expenseController.create);
+router.put("/expense/:expense_id", expenseController.update);
+router.delete("/expense/:expense_id", expenseController.destroy);
 
 module.exports = router;
