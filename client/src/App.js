@@ -1,10 +1,19 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Route } from "react-router-dom";
+import { Container } from "reactstrap";
+import Navigation from "./components/NavBar";
+import { Home, Login } from "./pages";
+
 function App() {
   return (
     <div>
-      <h1>Hello React</h1>
-      <Button color="danger">Danger!</Button>
+      
+      <Container>
+      <Navigation />
+        <Route path="/" component={Home} exact />
+        <Route path="/Login" component={Login} exact />
+      
+      </Container>
     </div>
   );
 }
