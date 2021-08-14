@@ -19,6 +19,15 @@ const Navigation = (props) => {
 
   const toggle = () => setIsOpen(!isOpen);
 
+ 
+ const renderLoginOrLogout = () => {
+    return (
+      <NavItem>
+      <NavLink href="/Login">Login</NavLink>
+    </NavItem>
+    )
+  }
+
   return (
     <div>
       <Navbar color="dark" dark expand="md">
@@ -26,9 +35,7 @@ const Navigation = (props) => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto"  navbar>
-            <NavItem>
-              <NavLink href="/Login">Login</NavLink>
-            </NavItem>
+          {this.renderLoginOrLogout()}
           </Nav>
         </Collapse>
       </Navbar>

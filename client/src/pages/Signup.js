@@ -1,47 +1,18 @@
 import React, { Component } from "react";
-import {
-  Button,
-  FormGroup,
-  Label,
-  Input,
-  FormFeedback,
-  Alert,
-} from "reactstrap";
+import { Button, FormGroup, Label, Input, FormFeedback } from "reactstrap";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { singIn } from "../actions";
 
-class LoginPage extends Component {
-  componentDidUpdate() {
-    const { error, isAuth } = this.props;
-    if (error && this.bag) {
-      this.bag.setSubmitting(false);
-    }
-
-    if (isAuth) {
-      this.props.history.push("/");
-    }
-  }
-  _handleFormSubmit(values, bag) {
-    this.props.singIn(values);
-    this.bag = bag;
-  }
-  _renderErrorIfAny() {
-    const { error } = this.props;
-    if (error) {
-      return <Alert color="danger">{error}</Alert>;
-    }
+class Signup extends Component {
+  _handleFormSubmit(values) {
+    console.log(values);
   }
   render() {
     return (
       <div style={{ padding: 20 }}>
-        <h3>Sign in to your account</h3>
+        <h3>Create New Accout</h3>
         <hr />
-        {this._renderErrorIfAny()}
-
         <Formik
           initialValues={{ email: "", password: "" }}
           onSubmit={this._handleFormSubmit.bind(this)}
@@ -59,6 +30,21 @@ class LoginPage extends Component {
             touched,
           }) => (
             <div>
+              <FormGroup>
+                <Label>Name</Label>
+                <Input
+                  invalid={errors.name && touched.name}
+                  name="name"
+                  type="string"
+                  placeholder="Your Name"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+
+                {errors.name && touched.name && (
+                  <FormFeedback>{errors.name}</FormFeedback>
+                )}
+              </FormGroup>
               <FormGroup>
                 <Label>Email</Label>
                 <Input
@@ -94,22 +80,15 @@ class LoginPage extends Component {
                 onClick={handleSubmit}
                 disabled={!isValid || isSubmitting}
               >
-                Sign in
+                Sign Up
               </Button>
             </div>
           )}
         />
-        <Link to="/signup">Do not have an account? Sign Up Now!</Link>
+        <Link to="/login">Have an account? Sign In</Link>
       </div>
     );
   }
 }
-const mapStateToProps = ({ auth }) => {
-  return {
-    attempting: auth.attempting,
-    error: auth.error,
-    isAuth: auth.isAuth,
-  };
-};
-const Login = connect(mapStateToProps, { singIn })(LoginPage);
-export { Login };
+
+export { Signup };
