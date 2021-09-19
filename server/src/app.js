@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 //const bodyParser = require("body-parser");
 const logger = require("morgan");
 const passport = require("passport");
+const cors = require("cors");
+const path = require('path');
 
 const v1 = require("./routes/v1");
 const app = express();
@@ -28,12 +30,21 @@ app.use(logger("dev"));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./config/passport")(passport);
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //---------------- Routes -------------//
 
 app.use("/api/v1", v1);
+//---------------- Static Files -------------//
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static(path.join(__dirname,'../../client/build')));
+  app.get('*',(req,res) => {
+    res.sendFile(
+      path.resolve(__dirame,'../../client','build','index.html')
+    )
+  })
+}
 
 //---------------- ERRORS -------------//
 

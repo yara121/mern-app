@@ -4,21 +4,40 @@ const expenseController = {};
 
 expenseController.get = async (req, res, next) => {
   const { user } = req;
-  //const now = new Date();
-
-  //const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-  //const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const now = new Date();
+  const month= parseInt(req.params.month);
+//  if(month && month >= 0 && month <= 11) now.setMonth(month)
+{
+  month >= 0 && month <= 11 && now.setMonth(month);
+}
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
   const query = {
     owner: user._id,
-    // created: {
-    //   $gte: firstDay,
-    //   $lt: lastDay,
-    //},
+    created: {
+      $gte: firstDay,
+      $lt: lastDay,
+    },
   };
   try {
-    const expense = await Expense.find(query);
+    const expense = await Expense.find(query).sort({created:'desc'});
+    const statistics = {};
+
+    if (expense.length > 0) {
+      //Max amount spent in the specified month
+      statistics.max = expense.sort((a, b) => a.amount < b.amount)[0].amount;
+
+      //Total amount spent in the specified month
+      statistics.total = expense
+        .map((item) => item.amount)
+        .reduce((prev, next) => prev + next);
+
+      //Avg expense for the given month
+      statistics.avg = Math.floor(statistics.total / expense.length);
+    }
     return res.send({
       expense,
+      statistics
     });
   } catch (e) {
     next(e);
@@ -33,6 +52,7 @@ expenseController.create = async (req, res, next) => {
     owner: req.user,
   });
   try {
+
     const saved = await newExpense.save();
     return res.send({
       success: true,

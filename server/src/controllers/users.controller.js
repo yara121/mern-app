@@ -61,4 +61,9 @@ userController.login = async (req, res, next) => {
   }
   //if credi are ok , the create JWT and return it
 };
+
+userController.me = (req, res, next) => {
+  const { user } = req;
+  res.send({ user });
+};
 module.exports = userController;
