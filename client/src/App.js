@@ -1,15 +1,19 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Container } from "reactstrap";
 import Navigation from "./components/NavBar";
-import { Home, Login, Signup } from "./pages";
+import { Home, Login, Signup , Edit} from "./pages";
+import { NavBar, ProtectedRoute } from "./components";
 
 function App() {
   return (
     <div>
       <Container>
         <Navigation />
-        <Route path="/" component={Home} exact />
+        <Switch>
+          <ProtectedRoute path="/" component={Home} exact />
+          <ProtectedRoute path="/edit" component={Edit} exact />
+        </Switch>
         <Route path="/Login" component={Login} exact />
         <Route path="/signup" component={Signup} exact />
       </Container>

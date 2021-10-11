@@ -5,13 +5,13 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const passport = require("passport");
 const cors = require("cors");
-const path = require('path');
+const path = require("path");
 
 const v1 = require("./routes/v1");
 const app = express();
 
 //---------------- DB Config -------------//
-mongoose.connect(process.env.MONGO_DB_URL, {
+mongoose.connect(process.env.MONGO_DB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -37,15 +37,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1", v1);
 //---------------- Static Files -------------//
-if(process.env.NODE_ENV === 'production'){
-  app.use(express.static(path.join(__dirname,'../../client/build')));
-  app.get('*',(req,res) => {
-    res.sendFile(
-      path.resolve(__dirame,'../../client','build','index.html')
-    )
-  })
-}
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../../client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, "../../client", "build", "index.html")
+    );
+  });
+}
+$env: NODE_ENV = "production";
 //---------------- ERRORS -------------//
 
 app.use((req, res, next) => {
