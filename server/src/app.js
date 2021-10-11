@@ -11,7 +11,10 @@ const v1 = require("./routes/v1");
 const app = express();
 
 //---------------- DB Config -------------//
-mongoose.connect(process.env.MONGO_DB_URI, {
+
+// const uri = process.env.MONGODB_URI;
+
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -46,7 +49,7 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
-$env: NODE_ENV = "production";
+
 //---------------- ERRORS -------------//
 
 app.use((req, res, next) => {
