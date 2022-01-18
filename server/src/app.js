@@ -66,22 +66,3 @@ app.use((err, req, res, next) => {
   });
 });
 module.exports = app;
-
-// app.post("/hello", (req, res) => {
-//   const name = req.body.name;
-//   res.send({
-//     message: `Welcome ${name}`,
-//   });
-// });
-// app.post("/register", (req, res) => {
-//   const name = req.body.name;
-//   res.send({
-//     message: `Welcome ${name}`,
-//   });
-// });
-// app.post("/login", (req, res) => {
-//   const name = req.body.name;
-//   res.send({
-//     message: `Welcome ${name}`,
-//   });
-// });
