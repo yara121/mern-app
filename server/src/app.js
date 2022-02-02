@@ -12,20 +12,33 @@ const app = express();
 
 //---------------- DB Config -------------//
 
-// const uri = process.env.MONGODB_URI;
-
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
-mongoose.set("useUnifiedTopology", true);
-mongoose.connection.on("connected", () => {
-  console.log("Connected to the database");
-});
-mongoose.connection.on("error", (err) => {
-  console.error(`Failed to connect to the database :${err}`);
-});
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("DB connected");
+  })
+  .catch((err) => {
+    console.log("DB failed to connect");
+    console.log("err", err);
+  });
+// mongoose.connect(process.env.MONGODB_URI,
+//   {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useUnifiedTopology: true,
+//   }
+// );
+// mongoose.set("useUnifiedTopology", true);
+// mongoose.connection.on("connected", () => {
+//   console.log("Connected to the database");
+// });
+// mongoose.connection.on("error", (err) => {
+//   console.error(`Failed to connect to the database :${err}`);
+// });
 //---------------- Middlewares -------------//
 
 app.use(logger("dev"));
@@ -40,6 +53,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1", v1);
 //---------------- Static Files -------------//
+console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../../client/build")));
@@ -66,22 +80,3 @@ app.use((err, req, res, next) => {
   });
 });
 module.exports = app;
-
-// app.post("/hello", (req, res) => {
-//   const name = req.body.name;
-//   res.send({
-//     message: `Welcome ${name}`,
-//   });
-// });
-// app.post("/register", (req, res) => {
-//   const name = req.body.name;
-//   res.send({
-//     message: `Welcome ${name}`,
-//   });
-// });
-// app.post("/login", (req, res) => {
-//   const name = req.body.name;
-//   res.send({
-//     message: `Welcome ${name}`,
-//   });
-// });
